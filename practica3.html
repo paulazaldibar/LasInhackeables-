@@ -1,84 +1,307 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Práctica 3 - Vulnerabilidades XSS</title>
-    <style>
-        body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
-        .vulnerable { border: 2px solid #ff4444; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
-        .solucion { border: 2px solid #00C851; padding: 15px; margin-top: 30px; background-color: #e8f5e9; border-radius: 8px; }
-        input { padding: 8px; width: 250px; }
-        button { padding: 8px 15px; cursor: pointer; }
-        code { background: #eee; padding: 2px 4px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 3 - XSS | LAS INHACKEABLES</title>
+
+<style>
+
+/* ====== FONDO GRADIENTE ====== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', monospace;
+    color: white;
+    background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c2b4a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.35);
+    z-index: -1;
+}
+
+/* ====== HEADER ====== */
+header {
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #4facfe;
+    text-shadow: 0 0 8px rgba(79,172,254,0.7);
+}
+
+nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+/* ====== CONTENIDO ====== */
+
+.container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+}
+
+.card h2 {
+    color: #4facfe;
+    text-shadow: 0 0 6px rgba(79,172,254,0.6);
+}
+
+.card h3 {
+    color: #00ff88;
+    margin-top: 25px;
+}
+
+/* ====== INPUTS ====== */
+
+input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 6px;
+    border: none;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    background: #4facfe;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover{
+    opacity: 0.9;
+}
+
+/* ====== BLOQUES ====== */
+
+.vulnerable {
+    border: 2px solid #ff4444;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background: rgba(255,0,0,0.05);
+}
+
+.solucion {
+    border: 2px solid #00ff88;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background: rgba(0,255,120,0.05);
+}
+
+code {
+    background: rgba(255,255,255,0.1);
+    padding: 3px 6px;
+    border-radius: 5px;
+}
+
+/* ====== NOTAS ====== */
+
+#listaNotas {
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* ===== LEYENDA / PISTAS ===== */
+
+.leyenda {
+    font-size: 13px;
+    opacity: 0.6;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.03);
+    border-left: 3px solid rgba(255,255,255,0.2);
+}
+
+.leyenda h3{
+    color: #aaa;
+    font-weight: 500;
+}
+
+/* ====== FOOTER ====== */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    opacity: 0.7;
+}
+
+</style>
 </head>
+
 <body>
 
-    <h1>PRÁCTICA EN CLASE - 3 [cite: 5]</h1>
+<header>
+<h1>LAS INHACKEABLES</h1>
+<nav>
+<a href="index.html">Inicio</a>
+<a href="practica1.html">Práctica 1</a>
+<a href="practica2.html">Práctica 2</a>
+<a href="practica3.html">Práctica 3</a>
+</nav>
+</header>
 
-    <div class="vulnerable">
-        <h2>1. Reflected XSS (vulnerable) [cite: 12]</h2>
-        <p>Lo que escribas aquí se inserta usando <code>innerHTML</code> [cite: 13]</p>
-        <input type="text" id="inputReflected" placeholder="Busca algo...">
-        <button onclick="buscar()">Buscar</button>
-        
-        <div id="resultadoBusqueda">
-            <p><strong>Resultado:</strong> <span id="displayReflected"></span></p>
-        </div>
-    </div>
+<div class="container">
 
-    <div class="vulnerable">
-        <h2>2. Stored XSS (vulnerable con localStorage) [cite: 17]</h2>
-        <p>Añade una "note". Se guarda en localStorage y luego se renderiza [cite: 18]</p>
-        <input type="text" id="inputStored" placeholder="Escribe una nota...">
-        <button onclick="guardarNota()">Guardar nota</button>
-        
-        <h3>Notas guardadas[cite: 21]:</h3>
-        <div id="listaNotas" style="background: #fff; padding: 10px; border: 1px solid #ccc;"></div>
-    </div>
+<div class="card">
 
-    <div class="solucion">
-        <h2>Cómo "arreglarlo" EN ESTE CASO CONCRETO [cite: 23]</h2>
-        <p>Si en lugar de <code>innerHTML</code> usas <code>textContent</code>, el payload se muestra como texto plano y no se ejecuta.</p>
-        <input type="text" id="inputSeguro" placeholder="Prueba aquí el ataque...">
-        <button onclick="buscarSeguro()">Buscar (Seguro)</button>
-        <p><strong>Resultado seguro:</strong> <span id="displaySeguro"></span></p>
-    </div>
+<h2>PRÁCTICA 3 — Vulnerabilidades XSS</h2>
 
-    <script>
-        // 1. Función para el primer formulario (Reflected)
-        function buscar() {
-            // Obtenemos el valor del primer input
-            const texto = document.querySelector('input[placeholder="Busca algo..."]').value;
-            // Buscamos el lugar donde dice "Resultado:" y escribimos dentro
-            // IMPORTANTE: Asegúrate de que en tu HTML el span tenga id="displayReflected"
-            document.getElementById('displayReflected').innerHTML = texto;
-        }
+<div class="vulnerable">
+<h3>1. Reflected XSS (vulnerable)</h3>
+<p>Lo que escribas aquí se inserta usando <code>innerHTML</code></p>
 
-        // 2. Función para el segundo formulario (Stored)
-        function guardarNota() {
-            const nota = document.querySelector('input[placeholder="Escribe una nota..."]').value;
-            localStorage.setItem('notaPractica3', nota);
-            renderizarNotas();
-        }
+<input type="text" id="inputReflected" placeholder="Busca algo...">
+<button onclick="buscar()">Buscar</button>
 
-        function renderizarNotas() {
-            const guardado = localStorage.getItem('notaPractica3');
-            if (guardado) {
-                document.getElementById('listaNotas').innerHTML = guardado;
-            }
-        }
+<p><strong>Resultado:</strong> <span id="displayReflected"></span></p>
+</div>
 
-        // 3. Función para la solución (Segura)
-        function buscarSeguro() {
-            const textoSeguro = document.querySelector('input[placeholder="Prueba aquí el ataque..."]').value;
-            // Aquí usamos textContent para que NO se ejecute el alert [cite: 24]
-            document.getElementById('displaySeguro').textContent = textoSeguro;
-        }
 
-        // Ejecutar al cargar la página para ver las notas guardadas [cite: 18]
-        window.onload = renderizarNotas;
-    </script>
+<div class="vulnerable">
+<h3>2. Stored XSS (vulnerable con localStorage)</h3>
+<p>Añade una "nota". Se guarda en localStorage y luego se renderiza.</p>
+
+<input type="text" id="inputStored" placeholder="Escribe una nota...">
+<button onclick="guardarNota()">Guardar nota</button>
+
+<h4>Notas guardadas:</h4>
+<div id="listaNotas"></div>
+</div>
+
+
+<div class="solucion">
+<h3>Solución en este caso concreto</h3>
+
+<p>
+Si en lugar de <code>innerHTML</code> usamos <code>textContent</code>,
+el payload se muestra como texto plano y **no se ejecuta**.
+</p>
+
+<input type="text" id="inputSeguro" placeholder="Prueba aquí el ataque...">
+<button onclick="buscarSeguro()">Buscar (Seguro)</button>
+
+<p><strong>Resultado seguro:</strong> <span id="displaySeguro"></span></p>
+</div>
+
+</div>
+</div>
+
+<div class="card leyenda">
+
+<h3>Pistas de prueba (recordatorio)</h3>
+
+<p><strong>1. Reflected XSS (Primera caja roja)</strong></p>
+<p>
+Qué escribir: <code>Hola Deusto &lt;img src=x onerror=alert('Ataque_XSS')&gt;</code><br>
+Qué debería pasar: aparecerá el texto "Hola Deusto" y se abrirá un <code>alert()</code>.<br>
+Por qué pasa: al usar <code>innerHTML</code>, el navegador interpreta el input como código HTML.
+</p>
+
+<p><strong>2. Stored XSS (Segunda caja roja)</strong></p>
+<p>
+Qué escribir: <code>&lt;details open ontoggle=alert('Nota_Maliciosa')&gt;Click para ver nota&lt;/details&gt;</code><br>
+Qué debería pasar: al guardar la nota se ejecutará el alert, y volverá a aparecer al recargar.<br>
+Por qué pasa: la nota se guarda en <code>localStorage</code> y se renderiza con <code>innerHTML</code>.
+</p>
+
+<p><strong>3. Solución (Caja verde)</strong></p>
+<p>
+Qué escribir: <code>&lt;img src=x onerror=alert('XSS')&gt;</code><br>
+Qué debería pasar: no ocurre nada, solo se muestra el texto.<br>
+Por qué pasa: aquí usamos <code>textContent</code>, que trata la entrada como texto plano.
+</p>
+
+<p>
+<strong>Resumen:</strong><br>
+Vulnerabilidad: insertar datos del usuario con <code>innerHTML</code>.<br>
+Objetivo: lograr un <code>alert()</code> mediante XSS.<br>
+Arreglo: usar <code>textContent</code>.
+</p>
+
+</div>
+
+<footer>
+© 2026 - LAS INHACKEABLES
+</footer>
+
+<script>
+
+/* Reflected XSS */
+function buscar() {
+const texto = document.querySelector('#inputReflected').value;
+document.getElementById('displayReflected').innerHTML = texto;
+}
+
+/* Stored XSS */
+function guardarNota() {
+const nota = document.querySelector('#inputStored').value;
+localStorage.setItem('notaPractica3', nota);
+renderizarNotas();
+}
+
+function renderizarNotas() {
+const guardado = localStorage.getItem('notaPractica3');
+if (guardado) {
+document.getElementById('listaNotas').innerHTML = guardado;
+}
+}
+
+/* Solución segura */
+function buscarSeguro() {
+const textoSeguro = document.querySelector('#inputSeguro').value;
+document.getElementById('displaySeguro').textContent = textoSeguro;
+}
+
+window.onload = renderizarNotas;
+
+</script>
 
 </body>
 </html>
