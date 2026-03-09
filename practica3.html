@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Práctica 3 - Vulnerabilidades XSS</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+        .vulnerable { border: 2px solid #ff4444; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        .solucion { border: 2px solid #00C851; padding: 15px; margin-top: 30px; background-color: #e8f5e9; border-radius: 8px; }
+        input { padding: 8px; width: 250px; }
+        button { padding: 8px 15px; cursor: pointer; }
+        code { background: #eee; padding: 2px 4px; }
+    </style>
+</head>
+<body>
+
+    <h1>PRÁCTICA EN CLASE - 3 [cite: 5]</h1>
+
+    <div class="vulnerable">
+        <h2>1. Reflected XSS (vulnerable) [cite: 12]</h2>
+        <p>Lo que escribas aquí se inserta usando <code>innerHTML</code> [cite: 13]</p>
+        <input type="text" id="inputReflected" placeholder="Busca algo...">
+        <button onclick="buscar()">Buscar</button>
+        
+        <div id="resultadoBusqueda">
+            <p><strong>Resultado:</strong> <span id="displayReflected"></span></p>
+        </div>
+    </div>
+
+    <div class="vulnerable">
+        <h2>2. Stored XSS (vulnerable con localStorage) [cite: 17]</h2>
+        <p>Añade una "note". Se guarda en localStorage y luego se renderiza [cite: 18]</p>
+        <input type="text" id="inputStored" placeholder="Escribe una nota...">
+        <button onclick="guardarNota()">Guardar nota</button>
+        
+        <h3>Notas guardadas[cite: 21]:</h3>
+        <div id="listaNotas" style="background: #fff; padding: 10px; border: 1px solid #ccc;"></div>
+    </div>
+
+    <div class="solucion">
+        <h2>Cómo "arreglarlo" EN ESTE CASO CONCRETO [cite: 23]</h2>
+        <p>Si en lugar de <code>innerHTML</code> usas <code>textContent</code>, el payload se muestra como texto plano y no se ejecuta.</p>
+        <input type="text" id="inputSeguro" placeholder="Prueba aquí el ataque...">
+        <button onclick="buscarSeguro()">Buscar (Seguro)</button>
+        <p><strong>Resultado seguro:</strong> <span id="displaySeguro"></span></p>
+    </div>
+
+    <script>
+        // 1. Función para el primer formulario (Reflected)
+        function buscar() {
+            // Obtenemos el valor del primer input
+            const texto = document.querySelector('input[placeholder="Busca algo..."]').value;
+            // Buscamos el lugar donde dice "Resultado:" y escribimos dentro
+            // IMPORTANTE: Asegúrate de que en tu HTML el span tenga id="displayReflected"
+            document.getElementById('displayReflected').innerHTML = texto;
+        }
+
+        // 2. Función para el segundo formulario (Stored)
+        function guardarNota() {
+            const nota = document.querySelector('input[placeholder="Escribe una nota..."]').value;
+            localStorage.setItem('notaPractica3', nota);
+            renderizarNotas();
+        }
+
+        function renderizarNotas() {
+            const guardado = localStorage.getItem('notaPractica3');
+            if (guardado) {
+                document.getElementById('listaNotas').innerHTML = guardado;
+            }
+        }
+
+        // 3. Función para la solución (Segura)
+        function buscarSeguro() {
+            const textoSeguro = document.querySelector('input[placeholder="Prueba aquí el ataque..."]').value;
+            // Aquí usamos textContent para que NO se ejecute el alert [cite: 24]
+            document.getElementById('displaySeguro').textContent = textoSeguro;
+        }
+
+        // Ejecutar al cargar la página para ver las notas guardadas [cite: 18]
+        window.onload = renderizarNotas;
+    </script>
+
+</body>
+</html>
