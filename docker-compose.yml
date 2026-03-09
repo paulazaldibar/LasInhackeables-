@@ -1,0 +1,12 @@
+services:
+  las_inhackeables:
+    build: .
+    container_name: las_inhackeables
+    env_file: .env
+    restart: always
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
