@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 5 - LAS INHACKEABLES</title>
+
+<style>
+
+/* ====== FONDO GRADIENTE ====== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', monospace;
+    color: white;
+    background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c2b4a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* Overlay suave para contraste */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: -1;
+}
+
+/* ====== MENÚ ====== */
+header {
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #4facfe;
+    text-shadow: 0 0 8px rgba(79,172,254,0.7);
+}
+
+nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+/* ====== CONTENIDO ====== */
+.container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+}
+
+.card h2 {
+    color: #4facfe;
+    text-shadow: 0 0 6px rgba(79,172,254,0.6);
+}
+
+.card h3 {
+    color: #00ff88; /* verde hacker brillante */
+    margin-top: 30px;
+}
+
+ul {
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    opacity: 0.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>LAS INHACKEABLES</h1>
+<nav>
+<a href="index.html">Inicio</a>
+<a href="practica1.html">Práctica 1</a>
+<a href="practica2.html">Práctica 2</a>
+<a href="practica3.html">Práctica 3</a>
+<a href="practica4.html">Práctica 4</a>
+<a href="practica5.html">Práctica 5</a>
+</nav>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>PRÁCTICA 5 — WEB SCRAPING</h2>
+
+        <h3>Reflexión</h3>
+        <p>En este apartado se ha desarrollado un script en Python utilizando <strong>requests</strong> y <strong>BeautifulSoup</strong> para hacer web scraping sobre la página de Hola.com.</p>
+        <p>Se ha conseguido extraer y guardar el texto de la web (títulos y párrafos), descargar imágenes, recopilar enlaces, buscar datos de contacto como emails y teléfonos, y descargar posibles archivos como PDFs.</p>
+        <p>En algunos casos, como los emails, no se han encontrado resultados, y en los teléfonos pueden aparecer valores que no son reales, debido a cómo está estructurada la página.</p>
+        <p>En general, se ha logrado recopilar información de la web de forma automática y almacenarla en distintos archivos.</p>
+
+        <h3>2.a. ¿Qué se puede conseguir con este tipo de programas?</h3>
+        <p>Con este tipo de programas se puede recopilar información de páginas web de forma automática, como textos, imágenes, enlaces, datos de contacto o archivos. Esto permite obtener grandes cantidades de datos sin tener que hacerlo manualmente.</p>
+        <p>Un uso real sería analizar varias páginas web de noticias (por ejemplo, Hola.com) para recopilar titulares y ver cuáles son los temas más frecuentes en un periodo de tiempo.</p>
+
+        <h3>2.b. OSINT: ¿Qué información se puede scrapear?</h3>
+        <p>En el contexto de OSINT (inteligencia de fuentes abiertas), se puede recopilar de forma masiva información pública como:</p>
+        <ul>
+            <li>Nombres y datos personales visibles</li>
+            <li>Correos electrónicos</li>
+            <li>Teléfonos</li>
+            <li>Perfiles en redes sociales</li>
+            <li>Noticias o menciones en medios</li>
+            <li>Imágenes y contenido publicado</li>
+            <li>Enlaces a otras páginas relacionadas</li>
+        </ul>
+        <p>Todo esto permite construir un perfil bastante completo de una persona o empresa usando solo información pública.</p>
+
+        <h3>2.c. Redes sociales: utilidad y problemas</h3>
+        <p>Sí, el scraping es útil en redes sociales para analizar tendencias, opiniones o comportamiento de usuarios.</p>
+        <p>Sin embargo, presenta varios problemas:</p>
+        <ul>
+            <li>Muchas plataformas bloquean el scraping o lo limitan</li>
+            <li>Uso de JavaScript dinámico (más difícil de extraer)</li>
+            <li>Problemas legales y de privacidad</li>
+            <li>Posibles bloqueos de IP o cuentas</li>
+            <li>Cambios frecuentes en la estructura de la web</li>
+        </ul>
+
+    </div>
+</div>
+
+<footer>
+    © 2026 - LAS INHACKEABLES
+</footer>
+
+</body>
+</html>
