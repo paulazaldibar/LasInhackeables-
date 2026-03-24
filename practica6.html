@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 6 - LAS INHACKEABLES</title>
+
+<style>
+
+/* ====== FONDO GRADIENTE ====== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', monospace;
+    color: white;
+    background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c2b4a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: -1;
+}
+
+/* ====== MENÚ ====== */
+header {
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #4facfe;
+    text-shadow: 0 0 8px rgba(79,172,254,0.7);
+}
+
+nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: #4facfe;
+    transition: color 0.3s;
+}
+
+/* ====== CONTENIDO ====== */
+.container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+}
+
+.card h2 {
+    color: #4facfe;
+    text-shadow: 0 0 6px rgba(79,172,254,0.6);
+}
+
+.card h3 {
+    color: #00ff88;
+    margin-top: 30px;
+}
+
+.card h4 {
+    color: #4facfe;
+    margin-top: 20px;
+    font-size: 15px;
+    opacity: 0.85;
+}
+
+ul {
+    line-height: 1.8;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+th {
+    background: rgba(79,172,254,0.2);
+    color: #4facfe;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid rgba(79,172,254,0.3);
+}
+
+td {
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+tr:nth-child(even) td {
+    background: rgba(255,255,255,0.04);
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    opacity: 0.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>LAS INHACKEABLES</h1>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="practica1.html">Práctica 1</a>
+        <a href="practica2.html">Práctica 2</a>
+        <a href="practica3.html">Práctica 3</a>
+        <a href="practica4.html">Práctica 4</a>
+        <a href="practica5.html">Práctica 5</a>
+        <a href="practica6.html">Práctica 6</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>PRÁCTICA 6 — MEDIDAS DE SEGURIDAD DE LA INFORMACIÓN</h2>
+        <h2 style="font-size:16px; color: #00ff88; text-shadow: none; margin-top: -10px;">Diseño teórico de una estrategia de BackUp</h2>
+
+        <!-- ====== APARTADO A ====== -->
+        <h3>A. Empresa de desarrollo web y hosting — 30 trabajadores</h3>
+
+        <p>Una empresa de este tamaño maneja código de clientes, bases de datos y configuraciones de servidores, por lo que la estrategia debe seguir la <strong>regla 3-2-1</strong>: 3 copias de los datos, en 2 medios distintos, con al menos 1 copia fuera de las instalaciones. La pérdida de datos en este contexto no solo supone un perjuicio económico propio, sino también para los clientes alojados, pudiendo derivar en reclamaciones legales y sanciones por el RGPD.</p>
+
+        <h4>i. Sistema de backup seleccionado y precio medio aproximado</h4>
+        <p>La solución más adecuada combina tres capas complementarias:</p>
+        <ul>
+            <li><strong>NAS empresarial</strong> (Synology RS1221+ con discos en RAID 6): copias locales automáticas cada hora. Precio: ~2.500–3.500 €.</li>
+            <li><strong>Backup en la nube</strong> (Veeam + Amazon S3 o Azure): copia offsite diaria con retención de 30 días para datos críticos. Precio: ~200–400 €/mes.</li>
+            <li><strong>Discos externos cifrados rotativos</strong>: copia semanal completa almacenada fuera de la oficina, como protección ante ransomware o desastres físicos. Precio: ~150–200 € por unidad.</li>
+        </ul>
+        <p>Todo el proceso se gestiona de forma centralizada con software como <strong>Veeam</strong> o <strong>Acronis Cyber Backup</strong>, que monitoriza el estado de las copias, programa ventanas de backup y genera alertas ante fallos.</p>
+
+        <h4>ii. Alternativa más barata manteniendo la seguridad necesaria</h4>
+        <p>Se puede reducir el coste sustituyendo el NAS de gama alta por un <strong>Synology DS923+</strong> (~700–900 €), usando <strong>Backblaze B2</strong> como nube (~6 €/TB/mes) junto con el software gratuito <strong>Duplicati</strong>, y rotando discos externos cifrados en lugar de cintas. El coste total se reduce a unos <strong>1.500–2.000 € iniciales</strong> y <strong>30–60 €/mes</strong>, manteniendo igualmente la regla 3-2-1 y el cifrado de extremo a extremo.</p>
+
+        <!-- ====== APARTADO B ====== -->
+        <h3>B. Autónomo de desarrollo web y hosting — 1 trabajador</h3>
+
+        <p>Un autónomo trabaja con presupuesto limitado y sin equipo técnico de soporte, por lo que la estrategia debe ser <strong>sencilla, automatizada y de bajo coste</strong>, pero igualmente fiable. Aunque el volumen de datos es menor, la responsabilidad hacia los clientes sigue existiendo, especialmente en lo que respecta al tratamiento de datos personales.</p>
+
+        <h4>i. Sistema de backup seleccionado y precio medio</h4>
+        <ul>
+            <li><strong>NAS doméstico</strong> (Synology DS223 en RAID 1): copias diarias automáticas con Duplicati. Precio: ~300–400 €.</li>
+            <li><strong>Backup en la nube</strong> (Backblaze Personal Backup, ~9 €/mes): copia offsite cifrada y automática.</li>
+            <li><strong>GitHub / GitLab gratuito</strong>: actúan como copia adicional del código fuente sin coste extra.</li>
+            <li><strong>Snapshots del proveedor VPS</strong> (Hetzner, DigitalOcean...): para los servicios de hosting de clientes (~1–3 €/mes por servidor).</li>
+        </ul>
+
+        <h4>ii. Alternativa más barata manteniendo la seguridad necesaria</h4>
+        <p>La opción de mínimo coste sería un <strong>disco externo de 2 TB</strong> (~60–80 €) con Duplicati o la herramienta de backup del sistema operativo, y <strong>Google One</strong> (2 TB por ~9,99 €/mes) como copia en la nube. El código en GitHub gratuito completa la estrategia sin coste adicional. Con una inversión inicial de apenas <strong>60–80 €</strong> y unos <strong>2–10 €/mes</strong>, se obtiene una protección razonable frente a los riesgos más habituales.</p>
+
+        <!-- ====== TABLA RESUMEN ====== -->
+        <h3>Conclusión comparativa</h3>
+
+        <table>
+            <tr>
+                <th></th>
+                <th>Empresa — 30 trabajadores</th>
+                <th>Autónomo</th>
+            </tr>
+            <tr>
+                <td><strong>Solución recomendada</strong></td>
+                <td>NAS + Nube empresarial + Discos offsite</td>
+                <td>NAS doméstico + Nube + GitHub</td>
+            </tr>
+            <tr>
+                <td><strong>Coste inicial</strong></td>
+                <td>4.000 – 7.000 €</td>
+                <td>300 – 400 €</td>
+            </tr>
+            <tr>
+                <td><strong>Coste mensual</strong></td>
+                <td>200 – 400 €/mes</td>
+                <td>2 – 10 €/mes</td>
+            </tr>
+            <tr>
+                <td><strong>Opción económica</strong></td>
+                <td>~1.500 € + 30–60 €/mes</td>
+                <td>~70 € + 2–10 €/mes</td>
+            </tr>
+        </table>
+
+        <p style="margin-top: 20px;">En ambos casos se respeta la <strong>regla 3-2-1</strong>, se garantiza el <strong>cifrado</strong> y la <strong>automatización</strong> de las copias, adaptando siempre la solución al tamaño y presupuesto de cada caso.</p>
+
+    </div>
+</div>
+
+<footer>
+    © 2026 - LAS INHACKEABLES
+</footer>
+
+</body>
+</html>
